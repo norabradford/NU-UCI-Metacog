@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My experiment</title>
+    <script src="jspsych-6.2.0/jspsych.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-instructions.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="jspsych-6.2.0/css/jspsych.css" rel="stylesheet" type="text/css">
+    </link>
+    <style>
+        .whitebox {
+            border: 2px solid white;
+            background: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 50px;
+            padding-right: 50px;
+            width: 20px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            font-family: sans-serif;
+            font-size: smaller;
+            text-align: left;
+        }
+        .graybox {
+            border: 2px solid white;
+            background: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 50px;
+            padding-right: 50px;
+            width: 80%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            font-family: sans-serif;
+            font-size: smaller;
+            text-align: left;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .box {
+            float: left;
+            width: 50%;
+            padding: 50px;
+            outline-style: solid;
+            outline-color: rgb(172, 186, 228);
+            margin-left:22vw;
+            outline-width: 4px;
+        }
+
+        h1 {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 60px;
+        }
+        p {
+        font-size: 22px;
+        }
+        psmol {
+        font-size: 18px;
+        }
+        h2 {
+        text-align: center;
+        text-transform: uppercase;
+        
+        }
+
+        table,
+        td {
+            padding: 10px
+        }
+        
+        .clearfix::after {
+            content: "";
+              clear: both;
+              display: table;
+        }
+ 
+
+    </style>
+</head>
+
+<body>
+    <div id ="choice" class="clearfix">
+        <div class="box" style="background-color:#ffffff; width: 50vw">
+        <h2>Same</h2>
+        <h1> ↑ </h1>
+        </div>
+        <div class="box" style="background-color:#ffffff; width: 50vw">
+         <h2>Different</h2>
+        <h1> ↓ </h1>
+        </div>
+      </div>
+    <div id ="choiceup" class="graybox">
+        <div class="box" style="background-color: rgb(172, 186, 228); width: 50vw">
+        <h2>Same</h2>
+        <h1> ↑ </h1>
+        </div>
+        <div class="box" style="background-color:#ffffff; width: 50vw">
+         <h2>Different</h2>
+        <h1> ↓ </h1>
+        </div>
+    </div>
+    <div id ="choicedown" class="clearfix">
+        <div class="box" style="background-color:#ffffff; width: 50vw">
+        <h2>Same</h2>
+        <h1> ↑ </h1>
+        </div>
+        <div class="box" style="background-color:rgb(172, 186, 228); width: 50vw">
+         <h2>Different</h2>
+        <h1> ↓ </h1>
+        </div>
+      </div>  
+
+    <div id="consent" style="display:visible;">
+        <div class="graybox" id="dummy-div">
+            <h2>Study Information Sheet: Online Study Protocols</h2>
+            <psmol>Welcome to the estimation study! Please, carefully read the information below before you decide to
+                participate
+                in this study.</psmol>
+
+            <h2>Objective processing and subjective uncertainty </h2>
+
+            <psmol>Lead Researcher: Megan Peters, Assistant Professor, Department of Cognitive Sciences
+                (megan.peters@uci.edu) </psmol>
+            <psmol>Please read the information below and ask questions about anything that you do not understand. A
+                researcher listed above will be available to answer your questions.</psmol>
+            <psmol>You are being asked to participate in a research study. Participation in this study is voluntary. You may
+                choose to skip a question or a study procedure. You may refuse to participate or discontinue your
+                involvement at any time without penalty or loss of benefits. You are free to withdraw from this study at
+                any time. <psmol> If you decide to withdraw from this study you should notify the research team
+                    immediately.</psmol></psmol>
+
+            <h2>Time Commitment</h2>
+
+            <psmol>This is a research study about how we make decisions about what we see, hear, or otherwise experience
+                through our senses. The study will last about 30 minutes to 2 hours.</psmol>
+
+            <psmol>If you elect to participate in this study, you will be asked to do the following task: on every trial,
+                many images in different locations will be shown. Following the presentation of the images, you will be
+                asked to judge various attributes of the images, and rate confidence in your answers.It is important
+                that you complete the study while in a quiet place where you can focus without distraction. Please be
+                sure that you have enough time and are in an appropriate setting before continuing with the study.</psmol>
+            <h2>Before you start the study, please note the following four items:</h2>
+            <psmol>Please use Google Chrome as your web browser in this experiment</psmol>
+            <psmol> Safari, Firefox, Internet Explorer, and other browsers will not work.</psmol>
+            <psmol>Please do NOT adjust your browser size after starting the experiment, as this can disrupt proper
+                presentation of the stimuli.</psmol>
+
+            <h2>Benefits & Risks</h2>
+            <psmol> Possible Risks: As with any task requiring you to focus intently on the computer monitor, you may
+                experience some eye fatigue or eye dryness. You will be given many opportunities to rest and look away
+                from the monitor during the break screens.</psmol>
+            <psmol>This study involves the collection of participant identifiable data (even if temporary such as for
+                recruitment or compensation purposes), and as such, a breach of confidentiality is a risk associated
+                with the research.</psmol>
+            <psmol>There are no direct benefits from participation in the study. However, this study may explain how we see,
+                hear, or otherwise judge our environments through our senses.</psmol>
+
+            <h2>You are eligible only if you are a resident of the United States over the age of 18</h2>
+
+            <psmol>You will receive $3.00 US in return for your participation.
+                Note: If your answers are below a minimal threshold for quality, you will not be compensated.</psmol>
+
+            <h2>Confidentiality & Anonymity</h2>
+            <psmol>All research data collected will be stored securely and confidentially on secure file servers that are
+                password protected.</psmol>
+
+            <psmol>Researchers will use your information to conduct this study. Once the study is done using your
+                information, we may share them with other researchers so they can use them for other studies in the
+                future. We will not share your name or any other private identifiable information that would let the
+                researchers know who you are. We will not ask your for additional permission to share this de-identified
+                information.</psmol>
+
+            <h2>Questions? </h2>
+            <psmol>If you have any comments, concerns, or questions regarding this study please contact the researchers
+                listed at the top of this form.
+                If you have questions or concerns about your rights as a research participant, you can contact the UCI
+                Institutional Review Board by phone (949) 824-6662, by email at <u>IRB@research.uci.edu</u> or at 141
+                Innovation, Suite 250, Irvine, CA 92697.
+            </psmol>
+        </div>
+    </div>
+</body>
+
+<script>
+    //var screen = screen.height;
+    /* define constants */
+    Array.prototype.sample = function () {
+        return this[Math.floor(Math.random() * this.length)];
+    }
+    //Wrappers for font sizes
+    var wrapperStart = "<center><div style='font-size: 24px; font-family: Helvetica, sans-serif'>";
+    var wrapperEnd = "</center></div>";
+    var wrapperStart1 = "<left><div style='font-size: 24px; font-family: Helvetica, sans-serif'>";
+    var wrapperEnd1 = "</left></div>";
+    var trialDuration = 750
+    var subDirectory = "stim/"
+    var saveLocally = 0;    // 0: Nothing.      1: Download CSV file
+    var displayData = 0;  // 0: Nothing.      1: Display data on browser
+    var launchOnline = 1;    // 0: Nothing.            1: Save to database, consent form, completion code generation, dummy variables created for all 3 IDs
+    var tableName = 'My experiment';
+    let sona_id = jsPsych.data.urlVariables()['sona_id'];
+    var workerId = sona_id;
+    var assignmentId = sona_id;
+    var hitId = sona_id;
+
+    jsPsych.data.addProperties({
+        workerId: workerId,
+        assignmentId: assignmentId,
+        hitId: hitId
+    });
+
+    function getRndInteger(min, max, mode) {
+        if (mode == 0) {
+            return Math.floor(Math.random() * 2) === 0 ? min : max; // Only min or max
+        } else if (mode ==1){
+            return Math.floor(Math.random() * (max - min + 1)) + min; // anything in between
+        }
+    }
+    //STIM NAMES
+    var stim = ['19_19', '13_13', '27_27','19_19', '13_13', '27_27','19_19', '13_13', '27_27','19_19', '13_13', '27_27',//same
+                '13_19', '19_13','19_27','27_19','13_19', '19_13','19_27','27_19','13_19', '19_13','19_27','27_19'] //different
+    function generateImage(stim, ind, i) {
+        var pick = ind[i];
+        //var pick = ind[i];
+
+        var randImgNum = getRndInteger(1, 99, 1)
+        var imageName = (stim[pick]+ '_' + randImgNum + '.png');  
+        return [imageName]; 
+    }
+
+    function generateStimuli(num) {
+        ind = []
+        for (let i = 0; i < num; i++) {
+            var index = d3.shuffle(d3.range(stim.length));
+            for (let j = 0; j < index.length; j++) {
+                ind.push(index[j]);
+            }
+        }
+        stimuli = []
+        var i = 0
+        while (i < ind.length) {
+            stimuli.push(generateImage(stim, ind, i));
+            i++;
+        }
+        return stimuli
+    }
+
+    //create consent form
+    function consent() {
+        var consentFormSignaturetext = $("#consent").html();
+        console.log(consentFormSignaturetext);
+        var consentFormSignature = {
+            type: 'html-button-response',
+            stimulus: consentFormSignaturetext,
+            choices: ['I Agree'],
+            button_html: ['<button class="jspsych-btn" style = "position:absolute; align:center"> I Agree </button>'],
+            prompt: wrapperStart +
+                '<br />' +
+                '<br />' +
+                '<br />' +
+                '<br />' +
+                wrapperEnd
+        };
+        return {
+            timeline: [
+                consentFormSignature,
+            ]
+        }
+    }
+
+    /* create timeline */
+    var timeline = [];
+    function fullScreenMode() {
+        return {
+            type: 'fullscreen',
+            button_label: 'Next >',
+            message: wrapperStart +
+                '<center><p> When you click "Next" below, your browser will be in fullscreen mode.</center></p>' +
+                wrapperEnd,
+            fullscreen_mode: true
+        };
+    }
+    //timeline.push(fullScreenMode());
+    /* define welcome message trial */
+    var welcome = {
+        type: "html-keyboard-response",
+        stimulus: "Welcome to the experiment. Press any key to begin."
+    };
+    var ProlificCode = {
+        type: "survey-text",
+        questions: [
+    //EDITED FOR TESTING
+    //{prompt: 'Enter your Prolific ID'}]
+    {prompt: 'Enter your name'}]
+}
+
+    /* define instructions trial */
+    var instructions = {
+        type: 'instructions',
+        pages: [ 
+            '<p>In this experiment, two groups of items will appear, one on each side of the screen.</p> '+
+            '<p>Press the right arrow key to continue.</p> ',
+            '<p>You will be asked whether the two sides have the <strong>same</strong> number of items or <strong>different</strong> numbers of items.</p>',
+            "<p>On every trial, there is a 50/50 chance of the sides being same or different.</p>",
+            '<p>The images will only be on the screen for LESS THAN 1 SECOND, so pay close attention.</p> ',
+            "<p>Place fingers on your left hand over the <strong> 1, 2, 3, and 4 </strong> keys. </p>" +
+            "<p>And place fingers on your right hand over the <strong> up and down arrow </strong> keys. </p>" +
+            `<img src='keyboard-layout1.jpg' width= "${screen.width * 0.6}">` +
+            "<p>Do NOT use the number keypad to make responses.</p>",
+            "<p>When asked <strong>do the images have the same number of items,</strong></p>" +
+            "<p>if they have the <strong>same</strong> number, press up arrow key. </p>" +
+            "<p>If they have <strong>different</strong> numbers, press down arrow key.</p>"+
+            `<img src='stim/13_19_2.png' width= "${screen.width * 0.7}">` +
+            "<p>Then rate your confidence in your choice on a scale from <strong> not at all confident (press 1)</strong> to <strong>completely confident (press 4)</strong>.</p>" +
+            "<p>Press the right arrow key to move to a practice round.</p>"
+
+        ],
+        show_clickable_nav: true,
+    }
+
+    
+    var slowpractice = {
+        type: "html-keyboard-response",
+        stimulus: "<p> Let's practice! Do the two patches have the same number of dots?</p>" +
+            "<p>Press up arrow for same and down arrow for different</p>" +
+            `<img src='stim/27_27_70.png' width= "${screen.width * 0.7}">`,
+        post_trial_gap: 100,
+        choices: ['downarrow', 'uparrow'],
+        on_finish: function (data) {
+            // Score the response as correct or incorrect.
+            if (jsPsych.pluginAPI.compareKeys(data.key_press, 'downarrow')) {
+                data.side = true;
+            } else {
+                data.side = false;
+            }
+        }
+    };
+
+    var practice1feedback = {
+        type: "html-keyboard-response",
+        choices: ['rightarrow'],
+        stimulus: function () {
+            var last_trial = jsPsych.data.get().last(1).values()[0].side;
+            if (last_trial) {
+                return "<p> Incorrect. The two sides had the same number of dots.</p>" +
+                    "<p>You chose <strong>different</strong></p>"+
+                    "<p>Press the right arrow key to continue</p>"; // the parameter value has to be returned from the function
+            } else {
+                return "<p> Correct! The two sides had the same number of dots.</p>"+
+                "<p>Press the right arrow key to continue</p>";
+            }
+        },
+        trial_duration: 4000,
+    }
+
+    var slowpractice2 = {
+        type: "html-keyboard-response",
+        stimulus: "<p> Let's practice! Do the two patches have the same number of dots?</p>" +
+            "<p>Press up arrow for same and down arrow for different</p>" +
+            `<img src='stim/19_27_0.png' width= "${screen.width * 0.7}">`,
+        post_trial_gap: 100,
+        choices: ['downarrow', 'uparrow'],
+        on_finish: function (data) {
+            // Score the response as correct or incorrect.
+            if (jsPsych.pluginAPI.compareKeys(data.key_press, 'downarrow')) {
+                data.side = true;
+            } else {
+                data.side = false;
+            }
+        }
+    }
+
+    var practice2feedback = {
+        type: "html-keyboard-response",
+        choices: ['rightarrow'],
+        stimulus: function () {
+            var last_trial = jsPsych.data.get().last(1).values()[0].side;
+            if (last_trial) {
+                return "<p> Correct! The two sides had different numbers of dots.</p>" +
+                "<p>Press the right arrow key to continue</p>";
+            } else {
+                return "<p> Incorrect. The two sides had different numbers of dots.</p>" +
+                    "<p>You chose <strong>same</strong></p>"+ 
+                    "<p>Press the right arrow key to continue</p>";
+            }
+        },
+    }
+    var fastpracticeintro = {
+        type: "html-keyboard-response",
+        stimulus: "<p> Now let's try a faster trial. </p>" +
+        "<p> You'll see the patches of dots for less than a second and decide whether they have the same or different numbers of dots.</p>"+
+        "<p>Press the right arrow key to continue</p>",
+        post_trial_gap: 100,
+        choices: ['rightarrow'],
+        
+    }
+
+    var fastpractice1 = {
+        type: "html-keyboard-response",
+        stimulus: "<p> Now let's try a faster trial. You'll see the patches of dots  </p>" +
+            "<p> for less than a second and decide whether they have the same or different numbers of dots.</p>",
+        post_trial_gap: 100,
+        stimulus: `<img src='stim/13_19_0.png' width= "${screen.width * 0.9}">`,
+        choices: jsPsych.NO_KEYS,
+        trial_duration: trialDuration
+    }
+    var fastpractice2 = {
+        type: "html-keyboard-response",
+        stimulus: "<p> Now let's try a faster trial. You'll see the patches of dots  </p>" +
+            "<p> for less than a second and decide whether they have the same or different numbers of dots.</p>",
+        post_trial_gap: 100,
+        stimulus: `<img src='stim/13_13_0.png' width= "${screen.width * 0.9}">`,
+        choices: jsPsych.NO_KEYS,
+        trial_duration: trialDuration
+    }
+    var begin = { //TODO: uncomment break text + add time estimate
+        type: "html-keyboard-response",
+        stimulus: "<p>Ready for the real thing? This experiment will last around 3 minutes" +
+            //"<p>There are 2 built in breaks throughout the experiment" +
+            "<p>Press any key to begin.</p>",
+        post_trial_gap: 100
+    };
+
+    function choice() {
+            var numberJudgementStim = $("#choice").html();
+            var numberJudgement = {
+                type: 'html-keyboard-response',
+                stimulus:"<p> Do the two patches have the same number of dots?</p>" + numberJudgementStim,
+                choices: ['uparrow', 'downarrow'],
+                on_finish: function (data) {
+                    // Score the response as correct or incorrect.
+                    if (jsPsych.pluginAPI.compareKeys(data.key_press, 'downarrow')) {
+                        data.side = true;
+                    } else {
+                        data.side = false;
+                    }
+                }
+            };
+            return {
+                timeline: [
+                    numberJudgement,
+                ]
+            }
+        }
+
+    var choiceup = $("#choiceup").html();
+    var choicedown = $("#choicedown").html();
+    var feedback = {
+        type: "html-keyboard-response",
+        choices: "NO_KEYS",
+        stimulus: function () {
+            // The feedback stimulus is a dynamic parameter because we can't know in advance whether
+            // the stimulus should be 'correct' or 'incorrect'.
+            // Instead, this function will check the accuracy of the last response and use that information to set
+            // the stimulus value on each trial.
+            var last_trial = jsPsych.data.get().last(1).values()[0].side;
+            if (last_trial) {
+                return "<p> Do the two patches have the same number of dots?</p>" + choicedown;
+            } else {
+                return "<p> Do the two patches have the same number of dots?</p>" + choiceup ;
+            }
+        },
+        trial_duration: 400,
+    }
+
+    var ready = {
+        type: "html-keyboard-response",
+        stimulus: '<p style="font-size: 48px;">+</p>',
+        choices: "NO_KEYS",
+        trial_duration: 600,
+    };
+
+    var confidence = {
+        type: 'html-keyboard-response',
+        stimulus: '<p>How confident do you feel in your choice?</p>' +
+            '<table id="myTable", padding: 15px >' +
+            '<tr>' +
+            '<td>1</td>' +
+            '<td>2</td>' +
+            '<td>3</td>' +
+            '<td>4</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>  Not at all confident  </td>' +
+            '<td>  Slighly confident  </td>' +
+            '<td>  Fairly confident  </td>' +
+            '<td>  Completely confident  </td>' +
+            '</tr>' +
+            '</table>',
+        on_finish: function (data) {
+            // Score the response as correct or incorrect.
+            data.confidence = parseInt(data.key_press);
+        },
+        choices: ['1', '2', '3', '4'],
+    }
+
+    var feedbackConfidence = {
+        type: "html-keyboard-response",
+        choices: "NO_KEYS",
+        stimulus: function () {
+            // Get the response from the previous trial
+            var jspsychdata = jsPsych.data.get();
+            console.log(jspsychdata);
+            var last_trial = jspsychdata.last(1).values()[0].confidence;
+            console.log(jspsychdata.last(1).values());
+
+            // Provide feedback based on the response
+            if (last_trial == 49) {
+                return '<p>How confident do you feel in your choice?</p>' +
+                    '<table id="myTable" style="padding: 15px;">' +
+                    '<tr>' +
+                    '<td><strong>1</strong></td>' +
+                    '<td>2</td>' +
+                    '<td>3</td>' +
+                    '<td>4</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td><strong>Not at all confident</strong></td>' +
+                    '<td>Slightly confident</td>' +
+                    '<td>Fairly confident</td>' +
+                    '<td>Completely confident</td>' +
+                    '</tr>' +
+                    '</table>';
+            } else if (last_trial === 50) {
+                return '<p>How confident do you feel in your choice?</p>' +
+                    '<table id="myTable" style="padding: 15px;">' +
+                    '<tr>' +
+                    '<td>1</td>' +
+                    '<td><strong>2</strong></td>' +
+                    '<td>3</td>' +
+                    '<td>4</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Not at all confident</td>' +
+                    '<td><strong>Slightly confident</strong></td>' +
+                    '<td>Fairly confident</td>' +
+                    '<td>Completely confident</td>' +
+                    '</tr>' +
+                    '</table>';
+            } else if (last_trial === 51) {
+                return '<p>How confident do you feel in your choice?</p>' +
+                    '<table id="myTable" style="padding: 15px;">' +
+                    '<tr>' +
+                    '<td>1</td>' +
+                    '<td>2</td>' +
+                    '<td><strong>3</strong></td>' +
+                    '<td>4</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Not at all confident</td>' +
+                    '<td>Slightly confident</td>' +
+                    '<td><strong>Fairly confident</strong></td>' +
+                    '<td>Completely confident</td>' +
+                    '</tr>' +
+                    '</table>';
+            } else if (last_trial === 52) {
+                return '<p>How confident do you feel in your choice?</p>' +
+                    '<table id="myTable" style="padding: 15px;">' +
+                    '<tr>' +
+                    '<td>1</td>' +
+                    '<td>2</td>' +
+                    '<td>3</td>' +
+                    '<td><strong>4</strong></td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Not at all confident</td>' +
+                    '<td>Slightly confident</td>' +
+                    '<td>Fairly confident</td>' +
+                    '<td><strong>Completely confident</strong></td>' +
+                    '</tr>' +
+                    '</table>';
+            }
+        },
+        trial_duration: 200,
+    }
+
+    function generateBreakTime(number) {
+        return {
+            type: 'html-keyboard-response',
+            stimulus: "<p style='font-size: 25px'>Time to take a break!</p>" +
+                "<p style='font-size: 25px'>This is break number " + number + " out of 2.</p>" +
+                "<p style='font-size: 25px'>Take a rest for about a minute. Then, continue by pressing 'C'</p>",
+            choices: "c",
+            post_trial_gap: 100
+        }
+    }
+
+    function generateImageObject(imageName) {
+        return {
+            type: 'html-keyboard-response',
+            stimulus: `<img src='${subDirectory + imageName}' width= "${screen.width * 0.7}">`,
+            data: { imageName },
+            choices: jsPsych.NO_KEYS,
+            trial_duration: trialDuration
+        }
+    }
+
+    function makeFinal() {
+        var finalp1 =
+            "<p style='font-size: 40px'>You're all done!</p>" +
+            "<p style='font-size: 40px'>Press SUBMIT to ensure you're data is collected.</p>" +
+            "<p style='font-size: 30px'> Your completion code is C1676TSP </p>";
+
+        var final = {
+            type: 'instructions',
+            pages: [
+                finalp1
+            ],
+            on_finish: function () {
+                //Set the variable to true so that we submit the HIT
+                allPhasesCompleted = true;
+            },
+            button_label_next: "SUBMIT",
+            show_clickable_nav: true,
+        }
+        return {
+            timeline: [
+                final,
+            ]
+        }
+    }
+
+    var i = 0
+    var stimuli = generateStimuli(2)
+
+    timeline.push(consent());
+    timeline.push(fullScreenMode());
+    timeline.push(welcome);
+    timeline.push(ProlificCode);
+    timeline.push(instructions);
+    timeline.push(slowpractice);
+    timeline.push(practice1feedback);
+    timeline.push(slowpractice2);
+    timeline.push(practice2feedback);
+    timeline.push(fastpracticeintro);
+    timeline.push(fastpractice1);
+    timeline.push(choice());
+    timeline.push(feedback);
+    timeline.push(confidence);
+    timeline.push(feedbackConfidence);
+    timeline.push(fastpractice2);
+    timeline.push(choice());
+    timeline.push(feedback);
+    timeline.push(confidence);
+    timeline.push(feedbackConfidence);
+    timeline.push(begin);
+
+    while (i < stimuli.length) {
+        timeline.push(generateImageObject(stimuli[i]));
+        timeline.push(choice());
+        timeline.push(feedback);
+        timeline.push(confidence);
+        timeline.push(feedbackConfidence);
+        timeline.push(ready);
+        i++;
+        if ((i > 0) && (i < 1300) && (i % 110 == 0)) {
+           timeline.push(generateBreakTime(i / 110));
+        }
+    }
+    timeline.push(makeFinal());
+
+    /* start the experiment */
+    jsPsych.init({
+        timeline: timeline,
+        on_start: function () {
+            console.log(timeline)
+        },
+        on_finish: function () {
+            if (saveLocally == true) {
+                jsPsych.data.get().localSave('csv', 'testSave.csv'); //Save the data locally in a .csv file
+            }
+            if (displayData == true) {
+                jsPsych.data.displayData();
+            }
+            if (launchOnline == true) {
+                save_data(tableName, jsPsych.data.get().csv());
+            }
+        }
+    });
+    // select all trials
+    var all_data = jsPsych.data.get();
+
+    // get csv representation of data and log to console
+    function save_data(name, data) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({ filedata: data }));
+    }
+
+</script>
+
+</html>
+
+</html>

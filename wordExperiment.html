@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My experiment</title>
+    <script src="jspsych-6.2.0/jspsych.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-instructions.js"></script>
+    <script src="jspsych-6.2.0/plugins/jspsych-instructions.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="jspsych-6.2.0/css/jspsych.css" rel="stylesheet" type="text/css">
+    </link>
+    <style>
+        .graybox {
+            border: 2px solid white;
+            background: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 50px;
+            padding-right: 50px;
+            width: 80%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            font-family: sans-serif;
+            font-size: smaller;
+            text-align: left;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .box {
+            float: left;
+            width: 50%;
+            padding: 20px;
+            outline-style: solid;
+            outline-color: rgb(172, 186, 228);
+            margin-left: 32vw;
+            outline-width: 3px;
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 60px;
+        }
+
+        p {
+            font-size: 22px;
+        }
+
+        psmol {
+            font-size: 18px;
+        }
+
+        h2 {
+            text-align: center;
+            text-transform: uppercase;
+
+        }
+
+        table,
+        td {
+            padding: 10px
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="choice" class="clearfix">
+        <div class="box" style="background-color:#ffffff; width: 30vw">
+            <h2>Yes ↑ </h2>
+        </div>
+        <div class="box" style="background-color:#ffffff; width: 30vw">
+            <h2>No ↓</h2>
+        </div>
+    </div>
+    <div id="choiceup" class="graybox">
+        <div class="box" style="background-color: rgb(172, 186, 228); width: 30vw">
+            <h2>Yes ↑ </h2>
+        </div>
+        <div class="box" style="background-color:#ffffff; width: 30vw">
+            <h2>No ↓</h2>
+        </div>
+    </div>
+    <div id="choicedown" class="clearfix">
+        <div class="box" style="background-color:#ffffff; width: 30vw">
+            <h2>Yes ↑ </h2>
+        </div>
+        <div class="box" style="background-color:rgb(172, 186, 228); width: 30vw">
+            <h2>No ↓</h2>
+        </div>
+    </div>
+</body>
+<script>
+    var saveLocally = 0;    // 0: Nothing.      1: Download CSV file
+    var displayData = 0;  // 0: Nothing.      1: Display data on browser
+    var launchOnline = 1;    // 0: Nothing.            1: Save to database, consent form, completion code generation, dummy variables created for all 3 IDs
+    var tableName = 'My experiment';
+    var welcome = {
+        type: "html-keyboard-response",
+        stimulus: "Welcome to the experiment. Press any key to begin."
+    };
+
+    var instructions = {
+        type: 'instructions',
+        pages: [
+            '<p>In this experiment, you will be shown 31 words, one after another.</p> ' +
+            '<p>Try your best to remember these words.</p> ' +
+            '<p>Press the right arrow key to continue.</p> ',
+            '<p>You will then be shown more words and asked whether they appeared in the original group.</p>',
+            "<p>On every trial, there is a 50/50 chance of the words being old or new.</p>",
+            "<p>Then rate your confidence in your choice on a scale from <strong> not at all confident (press 1)</strong> to <strong>completely confident (press 4)</strong>.</p>" +
+            "<p>Press the right arrow key to start seeing the words.</p>"
+        ],
+        show_clickable_nav: true,
+    }
+
+    var word_set = [//{ 1: "ate", 2: "eight" }, { 1: "bare", 2: "bear" }, { 1: "blue", 2: "blew" },
+        //{ 1: "bore", 2: "boar" }, { 1: "cite", 2: "site" }, { 1: "dear", 2: "deer" },
+        //{ 1: "fair", 2: "fare" }, { 1: "flaw", 2: "floe" }, { 1: "flea", 2: "flee" }, { 1: "hair", 2: "hare" }, { 1: "hear", 2: "here" },{ 1: "heel", 2: "heal" }, { 1: "lead", 2: "lede" }, { 1: "made", 2: "maid" }, { 1: "male", 2: "mail" }, { 1: "mead", 2: "meed" }, { 1: "meat", 2: "meet" },
+        { 1: "moor", 2: "more" }, { 1: "pail", 2: "pale" }, { 1: "pair", 2: "pear" }, { 1: "peak", 2: "peek" }, { 1: "read", 2: "reed" },
+        //{ 1: "role", 2: "roll" }, { 1: "rood", 2: "rude" }, { 1: "sail", 2: "sale" }, { 1: "seam", 2: "seem" },
+        //{ 1: "sole", 2: "soul" }, { 1: "tale", 2: "tail" }, { 1: "tear", 2: "tier" }, { 1: "vain", 2: "vein" }, 
+        //{ 1: "wear", 2: "ware" }, { 1: "week", 2: "weak" }
+    ]
+
+
+    function getRndInteger(min, max, mode) { //get random integer between min and max
+        if (mode == 0) {
+            return Math.floor(Math.random() * 2) === 0 ? min : max; // Only min or max
+        } else if (mode == 1) {
+            return Math.floor(Math.random() * (max - min + 1)) + min; // anything in between
+        }
+    }
+
+    function generateImage(word_set, ind, i) {
+        var pick = ind[i];
+        var randWordInd = getRndInteger(1, 2, 0);
+        var word = word_set[pick][randWordInd];
+        return word;
+    }
+
+
+    function generateStimuli(num) { //randomize the order of stimuli and pick a word pair to show
+        ind = []
+        for (let i = 0; i < num; i++) {
+            var index = d3.shuffle(d3.range(word_set.length));
+            for (let j = 0; j < index.length; j++) {
+                ind.push(index[j]);
+            }
+        }
+        stimuli = []
+        for (let i = 0; i < ind.length; i++) {
+            stimuli.push(generateImage(word_set, ind, i));
+        }
+        return stimuli
+    }
+
+    function generateEncodingTrial(word) {
+        return {
+            type: 'html-keyboard-response',
+            stimulus: '<span style="font-size: 96px;">' + word + '</span>',
+            data: {
+                word: word
+            },
+            choices: jsPsych.NO_KEYS,
+            trial_duration: 2500
+        }
+    }
+
+    function generateTestTrial(word) {
+        var judgementStim = $("#choice").html();
+        var wordTest = {
+            type: 'html-keyboard-response',
+            stimulus: "<p> Was</p>" + '<span style="font-size: 96px;">' + word + '</span>' + "<p>in the original group of words?</p>" + judgementStim,
+            choices: ['uparrow', 'downarrow'],
+            on_finish: function (data) {
+                // Score the response as correct or incorrect.
+                if (jsPsych.pluginAPI.compareKeys(data.key_press, 'downarrow')) {
+                    data.side = true;
+                } else {
+                    data.side = false;
+                }
+            }
+        };
+        return {
+            timeline: [
+                wordTest,
+            ]
+        }
+    }
+
+
+    function generateFeedback(word) {
+        var choiceup = $("#choiceup").html();
+        var choicedown = $("#choicedown").html();
+        var feedback = {
+            type: "html-keyboard-response",
+            choices: "NO_KEYS",
+            stimulus: function () {
+                // The feedback stimulus is a dynamic parameter because we can't know in advance whether
+                // the stimulus should be 'correct' or 'incorrect'.
+                // Instead, this function will check the accuracy of the last response and use that information to set
+                // the stimulus value on each trial.
+                var last_trial = jsPsych.data.get().last(1).values()[0].side;
+                if (last_trial) {
+                    return "<p> Was</p>" + '<span style="font-size: 96px;">' + word + '</span>' + "<p>in the original group of words?</p>" + choicedown;
+                } else {
+                    return "<p> Was</p>" + '<span style="font-size: 96px;">' + word + '</span>' + "<p>in the original group of words?</p>" + choiceup;
+                }
+            },
+            trial_duration: 400,
+        };
+        return {
+            timeline: [
+                feedback,
+            ]
+        }
+    }
+
+    var confidence = {
+        type: 'html-keyboard-response',
+        stimulus: '<p>How confident do you feel in your choice?</p>' +
+            '<table id="myTable", padding: 15px >' +
+            '<tr>' +
+            '<td>1</td>' +
+            '<td>2</td>' +
+            '<td>3</td>' +
+            '<td>4</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>  Not at all confident  </td>' +
+            '<td>  Slighly confident  </td>' +
+            '<td>  Fairly confident  </td>' +
+            '<td>  Completely confident  </td>' +
+            '</tr>' +
+            '</table>',
+        on_finish: function (data) {
+            // Score the response as correct or incorrect.
+            data.confidence = parseInt(data.key_press);
+        },
+        choices: ['1', '2', '3', '4'],
+    }
+
+    var feedbackConfidence = {
+        type: "html-keyboard-response",
+        choices: "NO_KEYS",
+        stimulus: function () {
+            // Get the response from the previous trial
+            var jspsychdata = jsPsych.data.get();
+            console.log(jspsychdata);
+            var last_trial = jspsychdata.last(1).values()[0].confidence;
+            console.log(jspsychdata.last(1).values());
+
+            // Provide feedback based on the response
+            if (last_trial == 49) {
+                return '<p>How confident do you feel in your choice?</p>' +
+                    '<table id="myTable" style="padding: 15px;">' +
+                    '<tr>' +
+                    '<td><strong>1</strong></td>' +
+                    '<td>2</td>' +
+                    '<td>3</td>' +
+                    '<td>4</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td><strong>Not at all confident</strong></td>' +
+                    '<td>Slightly confident</td>' +
+                    '<td>Fairly confident</td>' +
+                    '<td>Completely confident</td>' +
+                    '</tr>' +
+                    '</table>';
+            } else if (last_trial === 50) {
+                return '<p>How confident do you feel in your choice?</p>' +
+                    '<table id="myTable" style="padding: 15px;">' +
+                    '<tr>' +
+                    '<td>1</td>' +
+                    '<td><strong>2</strong></td>' +
+                    '<td>3</td>' +
+                    '<td>4</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Not at all confident</td>' +
+                    '<td><strong>Slightly confident</strong></td>' +
+                    '<td>Fairly confident</td>' +
+                    '<td>Completely confident</td>' +
+                    '</tr>' +
+                    '</table>';
+            } else if (last_trial === 51) {
+                return '<p>How confident do you feel in your choice?</p>' +
+                    '<table id="myTable" style="padding: 15px;">' +
+                    '<tr>' +
+                    '<td>1</td>' +
+                    '<td>2</td>' +
+                    '<td><strong>3</strong></td>' +
+                    '<td>4</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Not at all confident</td>' +
+                    '<td>Slightly confident</td>' +
+                    '<td><strong>Fairly confident</strong></td>' +
+                    '<td>Completely confident</td>' +
+                    '</tr>' +
+                    '</table>';
+            } else if (last_trial === 52) {
+                return '<p>How confident do you feel in your choice?</p>' +
+                    '<table id="myTable" style="padding: 15px;">' +
+                    '<tr>' +
+                    '<td>1</td>' +
+                    '<td>2</td>' +
+                    '<td>3</td>' +
+                    '<td><strong>4</strong></td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Not at all confident</td>' +
+                    '<td>Slightly confident</td>' +
+                    '<td>Fairly confident</td>' +
+                    '<td><strong>Completely confident</strong></td>' +
+                    '</tr>' +
+                    '</table>';
+            }
+        },
+        trial_duration: 200,
+    }
+
+    var startTest = {
+        type: 'instructions',
+        pages: [
+            '<p>That was all the words!</p> ' +
+            '<p>Now you will see more words and asked whether they appeared in the original group.</p>' +
+            "<p>On every trial, there is a 50/50 chance of the words being old or new.</p>",
+            "<p>Then rate your confidence in your choice on a scale from <strong> not at all confident (press 1)</strong> to <strong>completely confident (press 4)</strong>.</p>" +
+            '<p>Press the right arrow key to start seeing the words.</p> ',
+        ],
+        show_clickable_nav: true,
+    }
+
+    function makeFinal() {
+        var finalp1 =
+            "<p style='font-size: 40px'>You're all done!</p>" +
+            "<p style='font-size: 40px'>Press SUBMIT to ensure you're data is collected.</p>" +
+            "<p style='font-size: 30px'> Your completion code is C1676TSP </p>";
+
+        var final = {
+            type: 'instructions',
+            pages: [
+                finalp1
+            ],
+            on_finish: function () {
+                //Set the variable to true so that we submit the HIT
+                allPhasesCompleted = true;
+            },
+            button_label_next: "SUBMIT",
+            show_clickable_nav: true,
+        }
+        return {
+            timeline: [
+                final,
+            ]
+        }
+    }
+
+    var ready = {
+        type: "html-keyboard-response",
+        stimulus: '<p style="font-size: 48px;">+</p>',
+        choices: "NO_KEYS",
+        trial_duration: 600,
+    };
+
+    // generate stimuli for training
+    var trainStimuli = generateStimuli(1);
+    var timeline = [];
+    timeline.push(welcome);
+    timeline.push(instructions);
+    for (let i = 0; i < trainStimuli.length; i++) {
+        timeline.push(generateEncodingTrial(trainStimuli[i]));
+    }
+    timeline.push(startTest); // add start test instructions to timeline
+    // generate stimuli for test
+    var testStimuli = generateStimuli(1)
+    for (let i = 0; i < testStimuli.length; i++) {
+        timeline.push(generateTestTrial(testStimuli[i]));
+        timeline.push(generateFeedback(testStimuli[i]));
+        timeline.push(confidence);
+        timeline.push(feedbackConfidence);
+        //timeline.push(ready);
+    }
+
+    jsPsych.init({
+        timeline: timeline,
+        on_start: function () {
+            console.log(timeline)
+        },
+        on_finish: function () {
+            if (saveLocally == true) {
+                jsPsych.data.get().localSave('csv', 'testSave.csv'); //Save the data locally in a .csv file
+            }
+            if (displayData == true) {
+                jsPsych.data.displayData();
+            }
+            if (launchOnline == true) {
+                save_data(tableName, jsPsych.data.get().csv());
+            }
+        }
+    })
+    timeline.push(makeFinal());
+
+    // get csv representation of data and log to console
+    function save_data(name, data) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({ filedata: data }));
+    }
+</script>
+
+</html>
+
+</html>
