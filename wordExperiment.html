@@ -107,7 +107,7 @@
         </div>
     </div>
 </body>
-<script>
+<script type=module>
     var saveLocally = 0;    // 0: Nothing.      1: Download CSV file
     var displayData = 0;  // 0: Nothing.      1: Display data on browser
     var launchOnline = 1;    // 0: Nothing.            1: Save to database, consent form, completion code generation, dummy variables created for all 3 IDs
@@ -131,15 +131,7 @@
         show_clickable_nav: true,
     }
 
-    var word_set = [//{ 1: "ate", 2: "eight" }, { 1: "bare", 2: "bear" }, { 1: "blue", 2: "blew" },
-        //{ 1: "bore", 2: "boar" }, { 1: "cite", 2: "site" }, { 1: "dear", 2: "deer" },
-        //{ 1: "fair", 2: "fare" }, { 1: "flaw", 2: "floe" }, { 1: "flea", 2: "flee" }, { 1: "hair", 2: "hare" }, { 1: "hear", 2: "here" },{ 1: "heel", 2: "heal" }, { 1: "lead", 2: "lede" }, { 1: "made", 2: "maid" }, { 1: "male", 2: "mail" }, { 1: "mead", 2: "meed" }, { 1: "meat", 2: "meet" },
-        { 1: "moor", 2: "more" }, { 1: "pail", 2: "pale" }, { 1: "pair", 2: "pear" }, { 1: "peak", 2: "peek" }, { 1: "read", 2: "reed" },
-        //{ 1: "role", 2: "roll" }, { 1: "rood", 2: "rude" }, { 1: "sail", 2: "sale" }, { 1: "seam", 2: "seem" },
-        //{ 1: "sole", 2: "soul" }, { 1: "tale", 2: "tail" }, { 1: "tear", 2: "tier" }, { 1: "vain", 2: "vein" }, 
-        //{ 1: "wear", 2: "ware" }, { 1: "week", 2: "weak" }
-    ]
-
+    import word_set from "./word_set.json" assert { type: 'json' };
 
     function getRndInteger(min, max, mode) { //get random integer between min and max
         if (mode == 0) {
@@ -152,24 +144,29 @@
     function generateImage(word_set, ind, i) {
         var pick = ind[i];
         var randWordInd = getRndInteger(1, 2, 0);
-        var word = word_set[pick][randWordInd];
+        var word = word_set[pick].word1;
+        if (randWordInd == 1) {
+            word = word_set[pick].word2;
+        }
         return word;
     }
 
+    function generateStimuli(num) {
+        var stimuli = [];
 
-    function generateStimuli(num) { //randomize the order of stimuli and pick a word pair to show
-        ind = []
+        // Generate 'num' sets of stimuli
         for (let i = 0; i < num; i++) {
-            var index = d3.shuffle(d3.range(word_set.length));
-            for (let j = 0; j < index.length; j++) {
-                ind.push(index[j]);
-            }
+            // Randomize the order of indices for the word set
+            var shuffledIndices = d3.shuffle(d3.range(word_set.length));
+
+            // Iterate over the shuffled indices, generate an image for each index and add it to the stimuli array
+            shuffledIndices.forEach((index) => {
+                // Generate an image for each index and add it to the stimuli array
+                stimuli.push(generateImage(word_set, shuffledIndices, index));
+            });
         }
-        stimuli = []
-        for (let i = 0; i < ind.length; i++) {
-            stimuli.push(generateImage(word_set, ind, i));
-        }
-        return stimuli
+
+        return stimuli;
     }
 
     function generateEncodingTrial(word) {
